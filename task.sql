@@ -1,12 +1,14 @@
 USE ShopDB;
 
-START TRANSACTION;
-
 INSERT INTO Orders (CustomerID, Date)
 VALUES (1, '2023-01-01');
 
+SET @new_order_id = LAST_INSERT_ID();
+
+START TRANSACTION;
+
 INSERT INTO OrderItems (OrderID, ProductID, Count)
-VALUES (LAST_INSERT_ID(), 1, 1);
+VALUES (@new_order_id, 1, 1);
 
 UPDATE Products
 SET WarehouseAmount = WarehouseAmount - 1
